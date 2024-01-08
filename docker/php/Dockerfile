@@ -5,43 +5,24 @@ FROM php:8.3.2RC1-apache-bullseye
 ADD sources.list /etc/apt/
 
 # Update APT
-RUN apt-get update -qq
+RUN apt update -qq
 
-# Set force-yes for all apt-get install
+# Set force-yes for all apt install
 RUN echo "APT::Get::force-yes \"true\";" > /etc/apt/apt.conf.d/90forceyes
 
 # Basic software
-RUN apt-get install -y -qq \
+RUN apt install -y -qq \
     unzip \
     git \
     curl \
     build-essential \
     vim
 
-# Basic extension for PHP
-RUN apt-get install -y -qq  \
-    libmcrypt-dev \
-    && docker-php-ext-install mcrypt
-
-# Install support for GD
-RUN apt-get install -y -qq \
-    libfreetype6-dev \
-    libpng12-dev \
-    libjpeg-dev \
-    libpng-dev \
-    && docker-php-ext-configure gd \
-        --enable-gd-native-ttf \
-        --with-freetype-dir=/usr/include/freetype2 \
-        --with-png-dir=/usr/include \
-        --with-jpeg-dir=/usr/include \
-    && docker-php-ext-install gd \
-    && docker-php-ext-enable gd
-
 # Install support for MySQL
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Install support for Sybase
-RUN apt-get install -y -qq freetds-dev \
+RUN apt install -y -qq freetds-dev \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/libsybdb.a \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.so /usr/lib/libsybdb.so \
     && docker-php-ext-install pdo pdo_dblib

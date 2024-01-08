@@ -1,0 +1,5 @@
+deb http://deb.debian.org/debian bookworm main
+deb http://deb.debian.org/debian-security/ bookworm-security main
+
+# information about the links
+# https://wiki.debian.org/SourcesList
